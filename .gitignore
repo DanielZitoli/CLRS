@@ -1,0 +1,22 @@
+# Ignore macOS .DS_Store files
+.DS_Store
+
+# Ignore VS code config
+.vscode/
+
+# Ignore CMake build directory
+/build/
+
+# Ignore CMake generated files
+/CMakeFiles/
+/CMakeCache.txt
+/CMakeScripts/
+/CMakeTmp/
+/CMakeLists.txt.user
+
+# Ignore compiled binaries and libraries
+*.o
+*.a
+*.so
+*.dll
+*.exe
