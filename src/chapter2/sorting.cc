@@ -1,4 +1,4 @@
-#include "chapter2/sorting.h"
+#include "chapter2/sorting.h" 
 
 void Chapter2::merge(std::vector<int> &arr, int start, int mid, int end) {
   std::vector<int> L(arr.begin()+start, arr.begin()+mid);
@@ -21,8 +21,8 @@ void Chapter2::merge(std::vector<int> &arr, int start, int mid, int end) {
 }
 
 void mergeSortHelp(std::vector<int> &arr, int start, int end) {
-  if (arr.size() <= 1) return;
-  int mid = start + (end - start)/2;
+  if (end - start <= 1) return;
+  int mid = (start + end) / 2;
   mergeSortHelp(arr, start, mid);
   mergeSortHelp(arr, mid, end);
   Chapter2::merge(arr, start, mid, end);
@@ -37,7 +37,7 @@ void Chapter2::selectionSort(std::vector<int> &arr) {
   for (int i = 0; i < n; ++i) {
     int maxIndex = i;
     for (int j = i+1; j < n; ++j) {
-      if (arr[j] > arr[maxIndex])
+      if (arr[j] < arr[maxIndex])
         maxIndex = j;
     }
     std::swap(arr[i], arr[maxIndex]);

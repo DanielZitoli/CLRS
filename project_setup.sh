@@ -23,3 +23,24 @@ run_make() {
     # Return to the root directory
     cd "$ROOT_DIR" || exit 1
 }
+
+# Finds executable with the given chaper and test name in the 
+# /build directory and runs the test
+run_test() {
+    if [ "$#" -lt 2 ]; then
+        echo "Usage: run_test [chapter] [test_name]"
+        return 1
+    fi
+
+    section_name=$1
+    test_name=$2
+    test_file="build/tests/${section_name}/test_${test_name}"
+
+    if [ -f "$test_file" ]; then
+        echo "Running test: $test_name"
+        ./"$test_file"
+    else
+        echo "Test file not found: $test_file"
+        return 1
+    fi
+}

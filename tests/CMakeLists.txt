@@ -14,7 +14,8 @@ function(configure_test_executable target_name section_name)
   target_link_libraries(${target_name} PRIVATE gtest gtest_main test_common_library ${section_name}_library)
 endfunction()
 
-# Think about how to add /common branch to /tests for shared testing fixtures
+# Adds /common branch as an include path for /tests for shared testing fixtures
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common)
 
 # Include chapter tests
 add_subdirectory(chapter2)
