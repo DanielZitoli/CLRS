@@ -9,19 +9,19 @@ TEST(Chapter2, LinearSearch1) {
     int target = pair.first;
     int result = pair.second;
     int index = Chapter2::linearSearch(arr, target);
-    ASSERT_EQ(index, result);
+    EXPECT_EQ(index, result);
   }
 }
 
 TEST(Chapter2, LinearSearch2) {
-  std::vector<int> arr = {13, 22, 3, 5, 10, 33};
-  std::vector<std::pair<int, int>> tests = {{3, 2}, {10, 4}, {40, -1}};
+  std::vector<char> arr = {'e', 'f', 'j', 'a', 'z', 'e'};
+  std::vector<std::pair<char, int>> tests = {{'f', 1}, {'y', -1}, {'e', 0}};
   
   for (auto pair: tests) {
-    int target = pair.first;
+    char target = pair.first;
     int result = pair.second;
     int index = Chapter2::linearSearch(arr, target);
-    ASSERT_EQ(index, result);
+    EXPECT_EQ(index, result);
   }
 }
 
@@ -34,7 +34,7 @@ TEST(Chapter2, BinarySearch) {
     int targetIndex = (31 * i) % arr.size();
     int dummyValue = (31 * i) % 100;
     int target = arr[targetIndex];
-    ASSERT_EQ(Chapter2::linearSearch(arr, target), Chapter2::binarySearch(arr, target));
-    ASSERT_EQ(Chapter2::linearSearch(arr, dummyValue), Chapter2::binarySearch(arr, dummyValue));
+    EXPECT_EQ(Chapter2::linearSearch(arr, target), Chapter2::binarySearch(arr, target));
+    EXPECT_EQ(Chapter2::linearSearch(arr, dummyValue), Chapter2::binarySearch(arr, dummyValue));
   }
 }

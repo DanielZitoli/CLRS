@@ -11,12 +11,16 @@ FetchContent_MakeAvailable(googletest)
 # Function to automate linking a specific testing file to it's chapter's library
 function(configure_test_executable target_name section_name)
   add_executable(${target_name} test_${target_name}.cc)
-  target_link_libraries(${target_name} PRIVATE gtest gtest_main test_common_library ${section_name}_library)
+  target_link_libraries(${target_name} PRIVATE gtest gtest_main tests_common_library ${section_name}_library)
 endfunction()
+
 
 # Adds /common branch as an include path for /tests for shared testing fixtures
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common)
 
 # Include chapter tests
+add_subdirectory(common)
 add_subdirectory(chapter2)
 add_subdirectory(chapter5)
+
+add_subdirectory(chapter6)

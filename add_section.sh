@@ -44,7 +44,7 @@ generate_test_CMakeLists() {
 
   # Add linking commands for each file
   for file in "${files[@]}"; do
-    echo "target_link_libraries(test_${file} PRIVATE gtest gtest_main ${section_name}_library)" >> tests/$section_name/CMakeLists.txt
+    echo "target_link_libraries(test_${file} PRIVATE gtest gtest_main ${section_name}_library tests_common_library)" >> tests/$section_name/CMakeLists.txt
   done
 }
 
