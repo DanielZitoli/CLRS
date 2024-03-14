@@ -26,10 +26,6 @@ namespace Chapter2 {
     std::vector<T> L(arr.begin()+start, arr.begin()+mid);
     std::vector<T> R(arr.begin()+mid, arr.begin()+end);
 
-    std::cout << "HELLO!";
-    comp(arr[0], arr[1]);
-    std::cout << "BYE!";
-
     int i = 0; int j = 0;
     for (int index = start; index < end; ++index) {
       if (i == L.size()) {

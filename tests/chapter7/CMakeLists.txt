@@ -1,0 +1,10 @@
+# tests/chapter7/CMakeLists.txt
+
+add_executable(test_partitions test_partitions.cc)
+add_executable(test_quick_sort test_quick_sort.cc)
+
+add_executable(test_three test_three.cc)
+target_link_libraries(test_three PRIVATE gtest gtest_main chapter7_library tests_common_library)
+
+target_link_libraries(test_partitions PRIVATE gtest gtest_main chapter7_library tests_common_library)
+target_link_libraries(test_quick_sort PRIVATE gtest gtest_main chapter7_library tests_common_library)

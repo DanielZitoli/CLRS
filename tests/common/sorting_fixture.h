@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "gtest/gtest.h"
+
 #include <vector>
 #include <algorithm>
 #include <random>
@@ -47,13 +48,6 @@ using SortPairsFunction = std::function<void(std::vector<std::pair<int, int>>&, 
 
 class StableSortTest : public ::testing::TestWithParam<SortPairsFunction> {
  protected:
-  // Comparison Functor Class that sorts list of pairs by first pair value
-  struct FirstEntryLessThan {
-    bool operator()(const std::pair<int, int> &a, const std::pair<int, int>&b) const {
-      return a.first < b.first;
-    }
-  };
-
   // Common setup code if needed
   void SetUp() override {
     // Initialize random number generator
@@ -62,8 +56,7 @@ class StableSortTest : public ::testing::TestWithParam<SortPairsFunction> {
 
     sortingFunction = GetParam();
 
-    FirstEntryLessThan lessThan{};
-    PairComparator comp = [](const std::pair<int, int> &a, const std::pair<int, int> &b) { return lessThan(a, b); };
+    PairComparator comp = [](const std::pair<int, int> &a, const std::pair<int, int> &b) { return a.first < b.first; };
   }
 
   // Generate a random array of given size
@@ -87,9 +80,8 @@ class StableSortTest : public ::testing::TestWithParam<SortPairsFunction> {
 
   // Check if array is sorted
   bool isSorted(const std::vector<std::pair<int, int>>& vec) {
-    return std::is_sorted(vec.begin(), vec.end(), comp);
+    return std::is_sorted(vec.begin(), vec.end(), std::less<std::pair<int, int>>());
   }
-
 
   // Sort function to be fetched from GetParam()
   SortPairsFunction sortingFunction;
@@ -100,19 +92,18 @@ class StableSortTest : public ::testing::TestWithParam<SortPairsFunction> {
   std::uniform_int_distribution<int> distribution{1, 100};
 };
 
-
+TEST_P(SortingTest, EmptyTest) {
+  std::vector<int> empty;
+  std::vector<int> expectedEmpty;
+  sortingFunction(empty, std::less<int>());
+  EXPECT_EQ(empty, expectedEmpty); 
+}
 
 TEST_P(SortingTest, SortTest) {
   for (int i = 0; i < 10; ++i) {
     std::vector<int> vec = generateRandomArray(100); // Generate a random array
     sortingFunction(vec, std::less<int>());
     EXPECT_TRUE(isSorted(vec)); 
-  }
-}
-
-void printVec(const std::vector<std::pair<int, int>> &vec) {
-  for (auto pair : vec) {
-    std::cout << pair.first << " - " << pair.second << std::endl;
   }
 }
 
@@ -126,7 +117,7 @@ TEST_P(StableSortTest, StableTest) {
       std::cout << e.what() << std::endl;
     }
     
-    // EXPECT_TRUE(isSorted(vec));
+    EXPECT_TRUE(isSorted(vec));
     // EXPECT_TRUE(isStableOrder(vec)); 
   }
 }
