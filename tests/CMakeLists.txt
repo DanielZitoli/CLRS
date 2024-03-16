@@ -14,10 +14,6 @@ function(configure_test_executable target_name section_name)
   target_link_libraries(${target_name} PRIVATE gtest gtest_main tests_common_library ${section_name}_library)
 endfunction()
 
-
-# Adds /common branch as an include path for /tests for shared testing fixtures
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common)
-
 # Include chapter tests
 add_subdirectory(common)
 add_subdirectory(chapter2)
@@ -26,3 +22,4 @@ add_subdirectory(chapter5)
 add_subdirectory(chapter6)
 add_subdirectory(chapter7)
 add_subdirectory(chapter8)
+add_subdirectory(chapter9)

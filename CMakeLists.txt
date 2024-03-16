@@ -10,5 +10,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
 # adds include directoy to include list
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# Adds /common branch as an include path for /tests for shared testing fixtures
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/tests/common)
+
 add_subdirectory(src)
 add_subdirectory(tests)

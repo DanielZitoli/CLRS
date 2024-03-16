@@ -24,6 +24,12 @@ TEST(Chapter2, InsertionSort) {
   EXPECT_EQ(arr, std::vector<int>({1, 2, 3, 4, 5, 6}));
 }
 
+TEST(Chapter2, RangeInsertionSort) {
+  std::vector<int> arr = {5, 2, 8, 4, 1, 0, 9, 3};
+  Chapter2::rangeInsertionSort(arr, 2, 6);
+  EXPECT_EQ(arr, std::vector<int>({5, 2, 0, 1, 4, 8, 9, 3}));
+}
+
 TEST(Chapter2, SelectionSort) {
   std::vector<int> arr = {5, 2, 4, 6, 1, 3};
   Chapter2::selectionSort(arr);

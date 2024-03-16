@@ -17,6 +17,9 @@ namespace Chapter2 {
   template <typename T, typename Compare = std::less<T>>
   void insertionSort(std::vector<T> &arr, Compare comp = Compare());
 
+  template <typename T, typename Compare = std::less<T>>
+  void rangeInsertionSort(std::vector<T> &arr, int p, int r, Compare comp = Compare());
+
   // ########  DEFINITIONS ########
 
   // comp(a, b) acts as (a < b) so these sort functions sort in increasing order by default
@@ -82,6 +85,19 @@ namespace Chapter2 {
       T key = arr[i];
       int j = i - 1;
       while (j >= 0 && comp(key, arr[j])) {
+        arr[j+1] = arr[j];
+        --j;
+      }
+      arr[j+1] = key;
+    }
+  }
+
+  template <typename T, typename Compare>
+  void rangeInsertionSort(std::vector<T> &arr, int p, int r, Compare comp) {
+    for (int i = p+1; i <= r; ++i) {
+      T key = arr[i];
+      int j = i - 1;
+      while (j >= p && comp(key, arr[j])) {
         arr[j+1] = arr[j];
         --j;
       }

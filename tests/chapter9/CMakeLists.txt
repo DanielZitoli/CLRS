@@ -1,0 +1,4 @@
+# tests/chapter9/CMakeLists.txt
+
+add_executable(test_order_statistics test_order_statistics.cc)
+target_link_libraries(test_order_statistics PRIVATE gtest gtest_main chapter9_library tests_common_library)

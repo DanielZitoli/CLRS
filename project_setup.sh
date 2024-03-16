@@ -1,5 +1,8 @@
 ROOT_DIR=$(pwd)
 
+alias c=clear
+HISTCONTROL=ignoredups:erasedups
+
 # Function to build the project with CMake
 build_cmake() {
     # Create a build directory if it doesn't exist
