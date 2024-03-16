@@ -61,31 +61,6 @@ namespace Chapter7 {
     }
   }
 
-  // template <typename T, typename Compare>
-  // void fuzzySort(std::vector<std::pair<T, T>> &vec, Compare comp) {
-  //   auto intervalComp = [&comp](const std::pair<T, T> &a, const std::pair<T, T> &b){
-  //     return comp(a.second, b.first); // a is less than b if its fully before it, not overlapping
-  //   };
-  //   auto overlapComp = [&comp](const std::pair<T, T> &a, const std::pair<T, T> &b){
-  //     return !comp(b.first, a.first) && !comp(a.second, b.first); // a.first <= b.first <= a.second
-  //   };
-  //   fuzzySortHelper(vec, 0, vec.size() - 1, intervalComp, overlapComp);
-  // }
-
-  // template <typename T, typename CompareIntervals, typename CompareOverlaps>
-  // void fuzzySortHelper(std::vector<std::pair<T, T>> &vec, int p, int r, const CompareIntervals &intervalComp, const CompareOverlaps &overlapComp) {
-  //   if (p < r) {
-  //     int less, equal;
-  //     int leftOverlap, rightOverlap;
-  //     std::tie(less, equal) = threeWayPartition(vec, p, r, intervalComp);
-  //     std::cout << "Pivots: [" << less << ", " << equal << "] " << std::endl;
-  //     fuzzySortHelper(vec, p, less, intervalComp, overlapComp);
-  //     fuzzySortHelper(vec, equal+1, r, intervalComp, overlapComp); 
-  //     std::tie(leftOverlap, rightOverlap) = threeWayPartition(vec, less+1, equal, overlapComp);
-  //     fuzzySortHelper(vec, leftOverlap+1, rightOverlap, intervalComp, overlapComp);
-  //   }
-  // }
-
   template <typename T, typename Compare>
   std::pair<T, T> overlapping(std::vector<std::pair<T, T>> &vec, int p, int r, const Compare &comp) {
     std::pair<T, T> endpoints = vec[r];

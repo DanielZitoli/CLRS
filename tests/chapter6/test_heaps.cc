@@ -4,7 +4,7 @@
 #include "random_generators.h"
 #include "sorting_fixture.h"
 
-GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(StableSortTest);
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(StableSortingTest);
 
 TEST(Chapter6, SimpleHeapify) {
   std::vector<int> vec1{2, 1, 3};

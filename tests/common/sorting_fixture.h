@@ -46,7 +46,7 @@ class SortingTest : public ::testing::TestWithParam<std::function<void(std::vect
 using PairComparator = std::function<bool(std::pair<int, int>, std::pair<int, int>)>;
 using SortPairsFunction = std::function<void(std::vector<std::pair<int, int>>&, PairComparator)>;
 
-class StableSortTest : public ::testing::TestWithParam<SortPairsFunction> {
+class StableSortingTest : public ::testing::TestWithParam<SortPairsFunction> {
  protected:
   // Common setup code if needed
   void SetUp() override {
@@ -99,15 +99,15 @@ TEST_P(SortingTest, EmptyTest) {
   EXPECT_EQ(empty, expectedEmpty); 
 }
 
-TEST_P(SortingTest, SortTest) {
+TEST_P(SortingTest, SortFunctionTest) {
   for (int i = 0; i < 10; ++i) {
-    std::vector<int> vec = generateRandomArray(100); // Generate a random array
+    std::vector<int> vec = generateRandomArray(1000); // Generate a random array
     sortingFunction(vec, std::less<int>());
     EXPECT_TRUE(isSorted(vec)); 
   }
 }
 
-TEST_P(StableSortTest, StableTest) {
+TEST_P(StableSortingTest, StableSortFunctionTest) {
   for (int i = 0; i < 5; ++i) {
     std::vector<std::pair<int, int>> vec = generateRandomArray(10); // Generate a random array
     

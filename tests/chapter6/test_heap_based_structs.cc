@@ -4,7 +4,7 @@
 #include "sorting_fixture.h"
 #include "random_generators.h"
 
-GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(StableSortTest);
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(StableSortingTest);
 
 TEST(Chapter6, SimpleStack) {
   Chapter6::HeapStack<int> s;
