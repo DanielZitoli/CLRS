@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "chapter5/random.h"
 #include "chapter8/linear_sorting.h"
 
 #include "random_generators.h"
@@ -33,7 +32,7 @@ TEST(Chapter8, CustomCountingSort) {
 TEST(Chapter8, RangeQueryTest) {
   int range = 10;
   int size = 50;
-  Chapter5::Random rand;
+  RandomValue<int> rand;
   for (int i = 0; i < 1000; ++i) {
     std::vector<int> input = generateRandomIntVector(size, range);
     Chapter8::RangeQuery rangeQuery{input, range};
@@ -45,7 +44,6 @@ TEST(Chapter8, RangeQueryTest) {
     EXPECT_EQ(rangeQuery.query(low, high), manualCount);
   }
 }
-
 
 TEST(Chapter8, BasicBucketSort) {
   std::vector<double> input{0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68};

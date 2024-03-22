@@ -47,6 +47,6 @@ TEST(Chapter5, UniqueShuffles) {
     Chapter5::shuffle(vec);
     permutations.insert(vec);
   }
-  std::cout << permutations.size() << std::endl;
+  
   ASSERT_GT(permutations.size(), 20);
 }

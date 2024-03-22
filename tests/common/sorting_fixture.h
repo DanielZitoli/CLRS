@@ -111,11 +111,11 @@ TEST_P(StableSortingTest, StableSortFunctionTest) {
   for (int i = 0; i < 5; ++i) {
     std::vector<std::pair<int, int>> vec = generateRandomArray(10); // Generate a random array
     
-    try {
+    // try {
     sortingFunction(vec, comp);
-    } catch (const std::exception &e) {
-      std::cout << e.what() << std::endl;
-    }
+    // } catch (const std::exception &e) {
+    //   std::cout << e.what() << std::endl;
+    // }
     
     EXPECT_TRUE(isSorted(vec));
     // EXPECT_TRUE(isStableOrder(vec)); 

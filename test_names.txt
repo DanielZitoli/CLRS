@@ -1,0 +1,9 @@
+chapter2 searching
+chapter2 sorting
+chapter5 random
+chapter6 heaps
+chapter6 heap_based_structs
+chapter7 partitions
+chapter7 quick_sort
+chapter8 linear_sorting
+chapter9 order_statistics

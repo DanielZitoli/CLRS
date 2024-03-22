@@ -97,6 +97,10 @@ create_section() {
   echo "Appending add_subdirectory($section_name) to tests/CMakeLists.txt..."
   echo "add_subdirectory($section_name)" >> tests/CMakeLists.txt
 
+  # Add tests to test_names.txt
+  for file in "${files[@]}"; do
+    echo "$section_name $file" >> test_names.txt
+  done
 
   # Generate CMakeLists.txt for src directory
   generate_src_CMakeLists "$section_name" "${files[@]}"
