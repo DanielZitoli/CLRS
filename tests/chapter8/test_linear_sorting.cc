@@ -119,4 +119,3 @@ INSTANTIATE_TEST_SUITE_P(LinearSorts, SortingTest, ::testing::Values(
   [](std::vector<int> &vec, std::less<int> lessThan) { Chapter8::bucketSort(vec, uniformBucketCDF); },
   [](std::vector<int> &vec, std::less<int> lessThan) { Chapter8::radixSort(vec); }
 ));
-

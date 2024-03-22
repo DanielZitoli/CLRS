@@ -7,7 +7,7 @@ std::vector<int> generateRandomIntVector(int size, int range);
 
 template <typename Dist = std::uniform_int_distribution<int>>
 class RandomValue {
-  using T = Dist::result_type;
+  using T = typename Dist::result_type;
  public:
   RandomValue();
   template <typename... Args>
@@ -26,7 +26,7 @@ RandomValue<Dist>::RandomValue(): initialSeed{rd()} {
 
 template <typename Dist>
 template <typename... Args>
-RandomValue<Dist>::T RandomValue<Dist>::operator()(Args &&... args) {
+typename RandomValue<Dist>::T RandomValue<Dist>::operator()(Args &&... args) {
   Dist distribution(std::forward<Args>(args)...);
   return distribution(generator);
 }
