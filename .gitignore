@@ -13,6 +13,7 @@
 /CMakeScripts/
 /CMakeTmp/
 /CMakeLists.txt.user
+/_deps
 
 # Ignore compiled binaries and libraries
 *.o

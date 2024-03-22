@@ -32,7 +32,7 @@ TEST(Chapter8, CustomCountingSort) {
 TEST(Chapter8, RangeQueryTest) {
   int range = 10;
   int size = 50;
-  RandomValue<int> rand;
+  RandomValue rand;
   for (int i = 0; i < 1000; ++i) {
     std::vector<int> input = generateRandomIntVector(size, range);
     Chapter8::RangeQuery rangeQuery{input, range};

@@ -6,7 +6,7 @@ namespace Chapter5 {
   }
 
   int Random::operator()(int low, int high) {
-    std::uniform_int_distribution<int> distribution{low, high};\
+    std::uniform_int_distribution<int> distribution{low, high};
     return distribution(generator);
   }
 

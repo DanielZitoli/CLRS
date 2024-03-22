@@ -5,26 +5,29 @@
 
 std::vector<int> generateRandomIntVector(int size, int range);
 
-template <typename T>
+template <typename Dist = std::uniform_int_distribution<int>>
 class RandomValue {
-  public:
+  using T = Dist::result_type;
+ public:
   RandomValue();
-  int operator()(T low, T high); // returns random int in range [low, high]
+  template <typename... Args>
+  T operator()(Args &&... args); // returns random int in range [low, high]
   void resetSeed();
-  private:
+ private:
   std::random_device rd;
   unsigned initialSeed;
   std::mt19937 generator;
 };
 
-template <typename T>
-RandomValue<T>::RandomValue(): initialSeed{rd()} {
+template <typename Dist>
+RandomValue<Dist>::RandomValue(): initialSeed{rd()} {
   resetSeed();
 }
 
-template <typename T>
-int RandomValue<T>::operator()(T low, T high) {
-  std::uniform_int_distribution<T> distribution{low, high};
+template <typename Dist>
+template <typename... Args>
+RandomValue<Dist>::T RandomValue<Dist>::operator()(Args &&... args) {
+  Dist distribution(std::forward<Args>(args)...);
   return distribution(generator);
 }
 
