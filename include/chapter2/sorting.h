@@ -41,7 +41,7 @@ namespace Chapter2 {
           arr[index] = L[i];
           ++i; ++index;  
         }
-      } else if (comp(L[i], R[j])) {
+      } else if (!comp(R[j], L[i])) { // if L <= R
         arr[index] = L[i];
         ++i;
       } else {

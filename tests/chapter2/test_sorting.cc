@@ -73,5 +73,5 @@ INSTANTIATE_TEST_SUITE_P(SortFunctions, SortingTest, ::testing::Values(
 
 INSTANTIATE_TEST_SUITE_P(StableSortFunctions, StableSortingTest, ::testing::Values(
   Chapter2::insertionSort<std::pair<int, int>, PairComparator>,
-  Chapter2::selectionSort<std::pair<int, int>, PairComparator>
+  Chapter2::mergeSort<std::pair<int, int>, PairComparator>
 )); 

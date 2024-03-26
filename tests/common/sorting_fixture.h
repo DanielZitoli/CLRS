@@ -98,8 +98,8 @@ TEST_P(SortingTest, SortFunctionTest) {
 }
 
 TEST_P(StableSortingTest, StableSortFunctionTest) {
-  for (int i = 0; i < 5; ++i) {
-    std::vector<std::pair<int, int>> vec = generateRandomArray(10); // Generate a random array
+  for (int i = 0; i < 10; ++i) {
+    std::vector<std::pair<int, int>> vec = generateRandomArray(1000); // Generate a random array
     sortingFunction(vec, comp);
     EXPECT_TRUE(isSorted(vec));
   }

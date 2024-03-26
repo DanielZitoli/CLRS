@@ -7,3 +7,4 @@ chapter7 partitions
 chapter7 quick_sort
 chapter8 linear_sorting
 chapter9 order_statistics
+chapter10 list
