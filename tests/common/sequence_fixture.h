@@ -76,9 +76,9 @@ TYPED_TEST_P(SequenceTest, MoveConstructor) {
   typename TestFixture::BaseType newBase{4, 2, 6, 8, 1, 5};
   typename TestFixture::TestType newTest{4, 2, 6, 8, 1, 5};
   this->base = std::move(newBase); this->test = std::move(newTest);
-  this->testModifiers("before");
+  this->testModifiers("beforeMove");
   this->base = newBase; this->test = newTest; // check if moved objects were left in a valid state
-  this->testModifiers("after");
+  this->testModifiers("afterMove");
 }
 
 TYPED_TEST_P(SequenceTest, Insert) {
@@ -150,40 +150,20 @@ TYPED_TEST_P(SequenceTest, PushAndPop) {
   }
 }
 
-REGISTER_TYPED_TEST_SUITE_P(SequenceTest, DestructEmpty, DefaultConstructor, InitListConstructor, MoveConstructor, Insert, Erase, PushAndPop);
+TYPED_TEST_P(SequenceTest, Reverse) {
+  // reverse empty list
+  this->base.reverse();
+  this->test.reverse();
+  this->testModifiers("emptyReverse");
 
+  this->base = typename TestFixture::BaseType{1, 2, 3, 4, 5};
+  this->test = typename TestFixture::TestType{1, 2, 3, 4, 5};
+  this->base.reverse();
+  this->test.reverse();
+  this->testModifiers("beforeReverse");
+  this->base.reverse();
+  this->test.reverse();
+  this->testModifiers("afterReverse");
+}
 
-template <typename T>
-class SequenceAdapter {
-  using value_type = typename T::value_type;
-  using iterator = typename T::iterator;
-  using const_iterator = typename T::const_iterator;
-  using size_type = typename T::size_type;
-
-  value_type object;
-
-  SequenceAdapter() {}
-  SequenceAdapter(const T &other) : object{other} {}
-  SequenceAdapter(T &&other) : object{std::move(other.object)} {}
-  template <typename Iter>   
-  SequenceAdapter(Iter first, Iter last) : object{first, last} {}
-  explicit SequenceAdapter(size_type n, const value_type& val = value_type()) : object{n, val} {}
-  SequenceAdapter(std::initializer_list<value_type> il) : object{il} {}
-  SequenceAdapter &operator=(T other) { object = other; }
-
-  // Capacity
-  size_type size() const { return object.size(); }
-  bool empty() const { return object.empty(); }
-
-  // Iterators
-  iterator begin() { return object.begin(); }
-  const_iterator begin() const { return object.begin(); }
-  iterator end() { return object.end(); }
-  const_iterator end() const { return object.end(); }
-
-  template <class... Args>  iterator insert(Args&&... args) { object.insert(std::forward<Args>(args)...); }
-  template <class... Args>  iterator emplace(Args&&... args) { object.emplace(std::forward<Args>(args)...); }
-  template <class... Args>  iterator erase(Args&&... args) { object.erase(std::forward<Args>(args)...); }
-};
-
-
+REGISTER_TYPED_TEST_SUITE_P(SequenceTest, DestructEmpty, DefaultConstructor, InitListConstructor, MoveConstructor, Insert, Erase, PushAndPop, Reverse);

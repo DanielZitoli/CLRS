@@ -8,3 +8,8 @@ chapter7 quick_sort
 chapter8 linear_sorting
 chapter9 order_statistics
 chapter10 list
+chapter11 hashing
+chapter11 hash_table
+chapter11 open_addressing
+chapter11 perfect_hashing
+chapter12 tree

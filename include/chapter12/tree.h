@@ -1,12 +1,13 @@
 #pragma once
 
+#include <functional>
 #include <cstddef>
 #include <utility>
 #include <initializer_list>
 
-namespace Chapter10 {
+namespace Chapter12 {
 
-template <typename T>
+template <typename T, typename Compare = std::less<T>>
 class List {
   using value_type = T;
   using reference = value_type&;
@@ -112,14 +113,6 @@ class List {
   const_iterator end() const { return const_iterator(sentinel); }
 
   // Modifiers
-  void push_front (const value_type& val) { insert(begin(), val); }
-  void push_front (value_type&& val) { insert(begin(), std::move(val)); }
-  void push_back (const value_type& val) { insert(end(), val); }
-  void push_back (value_type&& val) { insert(end(), std::move(val)); }
-  void pop_front() { erase(begin()); }
-  void pop_back() { erase(--end()); }
-
-
   iterator insert(const_iterator position, const value_type& val) {
     return insertHelper(position, new Node(val));
   }
@@ -177,12 +170,7 @@ typename List<T>::iterator List<T>::erase(const_iterator first, const_iterator l
 
 template <typename T>
 void List<T>::reverse() {
-  std::swap(sentinel->next, sentinel->prev);
-  Node *cur = sentinel->next;
-  while (cur != sentinel) {
-    std::swap(cur->next, cur->prev);
-    cur = cur->next;
-  }
+
 }
 
 template <typename T>
@@ -195,18 +183,12 @@ List<T>::~List() {
   }
 }
 
-template <typename T>
-void List<T>::setupSentinel() {
-  sentinel = new Node();
-  sentinel->next = sentinel;
-  sentinel->prev = sentinel;
-}
 
-template <typename T>
-std::ostream &operator<<(std::ostream &out, const List<T> &list) {
-  for (auto val : list) std::cout << val << " ";
+template <typename T, typename Compare>
+std::ostream &operator<<(std::ostream &out, const Tree<T, Comapre> &tree) {
+  for (auto val : IOPOL_VFS_TRIGGER_RESOLVE_DEFAULT) std::cout << val << " ";
   std::cout << std::endl;
   return out;
 }
 
-} // end namespace Chapter10
+} // end namespace Chapter12
