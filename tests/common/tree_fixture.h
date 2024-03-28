@@ -51,12 +51,26 @@ class TreeTest : public ::testing::Test {
     EXPECT_EQ(baseInserted, testInserted);
     checkElements(message);
 
-    baseIter = base.erase(baseIter);
-    testIter = test.erase(testIter);
+    int baseRemoved = base.erase(101);
+    int testRemoved = test.erase(101);
+    EXPECT_EQ(baseRemoved, testRemoved);
+    checkElements(message);
+
+    baseIter = base.erase(base.begin());
+    testIter = test.erase(test.begin());
     EXPECT_EQ(*baseIter, *testIter);
     checkElements(message);
   }
 };
+
+template <typename Iter>
+Iter &advance(Iter &it, int n) {
+  if (n > 0) {
+    for (int i = 0; i < n; ++i) ++it;
+  } else {
+    for (int i = 0; i < -n; ++i) ++it;
+  }
+}
 
 TYPED_TEST_SUITE_P(TreeTest);
 
@@ -68,7 +82,8 @@ TYPED_TEST_P(TreeTest, DestructEmpty) {
 TYPED_TEST_P(TreeTest, DefaultConstructor) {
   typename TestFixture::BaseType newBase;
   typename TestFixture::TestType newTest;
-  this->base = newBase; this->test = newTest;
+  this->base = newBase; 
+  this->test = newTest;
   this->testModifiers();
 }
 
@@ -124,19 +139,6 @@ TYPED_TEST_P(TreeTest, Erase) {
   testIter = this->test.erase(testIter);
   this->checkElements("first");
   EXPECT_EQ(*baseIter, *testIter);
-
-  ++baseIter; ++baseIter; ++testIter; ++testIter;
-
-  // baseIter = this->base.erase(this->base.begin(), baseIter);
-  // testIter = this->test.erase(this->test.begin(), testIter);
-  // this->checkElements("second");
-  // EXPECT_EQ(*baseIter, *testIter);
-
-  // ++baseIter; ++baseIter; ++testIter; ++testIter;
-
-  // baseIter = this->base.erase(baseIter, this->base.end());
-  // testIter = this->test.erase(testIter, this->test.end());
-  // this->checkElements("third");
 }
 
 TYPED_TEST_P(TreeTest, InsertAndEraseByValue) {
@@ -157,22 +159,49 @@ TYPED_TEST_P(TreeTest, InsertAndEraseByValue) {
   }
 }
 
-TYPED_TEST_P(TreeTest, UpperAndLowerBound) {
+TYPED_TEST_P(TreeTest, FindAndCount) {
   RandomValue rand;
-  int size = 100; int range = 500;
-  std::vector<int> randomSet = generateRandomIntVector(size, range);
-
-  int randomValue = rand(0, 500);
-  auto baseIter = this->base.lower_bound(randomValue);
-  auto testIter = this->test.lower_bound(randomValue);
-  if (baseIter != this->base.end()) {
-    EXPECT_EQ(*baseIter, *testIter);
+  int randomValue;
+  for (int i = 0; i < 1000; ++i) {
+    randomValue = rand(0, 2000);
+    this->base.insert(randomValue);
+    this->test.insert(randomValue);
   }
-  baseIter = this->base.upper_bound(randomValue);
-  testIter = this->test.upper_bound(randomValue);
-  if (baseIter != this->base.end()) {
-    EXPECT_EQ(*baseIter, *testIter);
+
+  for (int i = 0; i < 2000; ++i) {
+    randomValue = rand(0, 2000);
+    auto baseIter = this->base.insert(randomValue).first;
+    auto testIter = this->test.insert(randomValue).first;
+    if (baseIter != this->base.end()) {
+      EXPECT_EQ(*baseIter, *testIter);
+    }
+    int baseCount = this->base.count(randomValue);
+    int testCount = this->test.count(randomValue);
+    EXPECT_EQ(baseCount, testCount);
   }
 }
 
-REGISTER_TYPED_TEST_SUITE_P(TreeTest, DestructEmpty, DefaultConstructor, InitListConstructor, MoveConstructor, Insert, Erase, InsertAndEraseByValue, UpperAndLowerBound);
+
+
+TYPED_TEST_P(TreeTest, UpperAndLowerBound) {
+  RandomValue rand;
+  int randomValue;
+  for (int i = 0; i < 1000; ++i) {
+    randomValue = rand(0, 1000);
+    auto baseIter = this->base.lower_bound(randomValue);
+    auto testIter = this->test.lower_bound(randomValue);
+    if (baseIter != this->base.end()) {
+      EXPECT_EQ(*baseIter, *testIter);
+    }
+    baseIter = this->base.upper_bound(randomValue);
+    testIter = this->test.upper_bound(randomValue);
+    if (baseIter != this->base.end()) {
+      EXPECT_EQ(*baseIter, *testIter);
+    }
+    randomValue = rand(0, 1000);
+    this->base.insert(randomValue);
+    this->test.insert(randomValue);
+  }
+}
+
+REGISTER_TYPED_TEST_SUITE_P(TreeTest, DestructEmpty, DefaultConstructor, InitListConstructor, MoveConstructor, Insert, Erase, InsertAndEraseByValue, FindAndCount, UpperAndLowerBound);

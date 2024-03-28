@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <utility>
 #include <initializer_list>
+#include <iostream>
 
 namespace Chapter12 {
 
@@ -27,13 +28,12 @@ class BinaryTree {
     Node(const Node &other) : data{other.data}, parent{nullptr}, left{nullptr}, right{nullptr} {
       if (other.left) {
         left = new Node(*other.left);
-        // left->parent = this;
+        left->parent = this;
       }
       if (other.right) {
         right = new Node(*other.right);
-        // right->parent = this;
+        right->parent = this;
       }
-      connectChildren();
     }
     Node(Node &&other) : data{std::move(other.data)}, parent{other.parent}, left{other.left}, right{other.right} {
       other.parent = nullptr;
@@ -50,16 +50,6 @@ class BinaryTree {
     ~Node() {
       delete left;
       delete right;
-    }
-    void connectChildren() {
-      if (left != nullptr) {
-        left->parent = this;
-        left->connectChildren();
-      }
-      if (right != nullptr) {
-        right->parent = this;
-        right->connectChildren();
-      }
     }
   };
 
@@ -139,20 +129,16 @@ class BinaryTree {
   iterator begin() { 
     Node *min = getMinimum(head);
     return createIterator(min);
-    // return iterator(min, nullptr); 
   }
   const_iterator begin() const { 
     Node *min = getMinimum(head);
     return createIterator(min);
-    // return const_iterator(min, nullptr);
   }
   iterator end() {
     return createIterator(nullptr);
-    // return iterator(nullptr, getMaximum(head)); 
   }
   const_iterator end() const { 
     return createIterator(nullptr);
-    // return const_iterator(nullptr, getMaximum(head)); 
   }
 
   // Operations
@@ -182,19 +168,19 @@ class BinaryTree {
 
   iterator lower_bound(const value_type& val) { 
     Node *node = getLowerBound(head, val);
-    return iterator(node, getPredecessor(node)); 
+    return createIterator(node); 
   }
   const_iterator lower_bound(const value_type& val) const { 
     Node *node = getLowerBound(head, val);
-    return const_iterator(node, getPredecessor(node)); 
+    return createIterator(node); 
   }
   iterator upper_bound(const value_type& val) { 
     Node *node = getUpperBound(head, val);
-    return iterator(node, getPredecessor(node)); 
+    return createIterator(node); 
   }
   const_iterator upper_bound(const value_type& val) const { 
     Node *node = getUpperBound(head, val);
-    return const_iterator(node, getPredecessor(node)); 
+    return createIterator(node); 
   }
  
  private:
@@ -251,7 +237,7 @@ std::pair<typename BinaryTree<T, Compare>::iterator, bool> BinaryTree<T, Compare
       cur = cur->right;
     } else {
       // found element already in set
-      return std::pair<iterator, bool>(end(), false);
+      return std::pair<iterator, bool>(createIterator(cur), false);
     }
   }
   Node *newNode = new Node(val);
@@ -266,7 +252,7 @@ std::pair<typename BinaryTree<T, Compare>::iterator, bool> BinaryTree<T, Compare
     }
   }
   ++items;
-  return std::pair<iterator, bool>(iterator(newNode, getPredecessor(newNode)), true);
+  return std::pair<iterator, bool>(createIterator(newNode), true);
 }
 
 template <typename T, typename Compare>
@@ -301,19 +287,19 @@ typename BinaryTree<T, Compare>::iterator BinaryTree<T, Compare>::erase(const_it
   }
 
   --items;
-  return erasedNodeNext? iterator(erasedNodeNext, getPredecessor(erasedNodeNext)): end(); // maybe abstract this into a private helper "createIterator"
+  return createIterator(erasedNodeNext);
 }
 
 template <typename T, typename Compare>
 typename BinaryTree<T, Compare>::const_iterator BinaryTree<T, Compare>::findHelper(const value_type& val) const {
   Node *cur = head;
-  while (head != nullptr) {
+  while (cur != nullptr) {
     if (comp(val, cur->data)) {
       cur = cur->left;
     } else if (comp(cur->data, val)) {
       cur = cur->right;
     } else {
-      return iterator(cur, getPredecessor(cur));
+      return createIterator(cur);
     }
   }
   return end();
@@ -332,12 +318,24 @@ typename BinaryTree<T, Compare>::const_iterator BinaryTree<T, Compare>::createIt
 
 template <typename T, typename Compare>
 typename BinaryTree<T, Compare>::Node *BinaryTree<T, Compare>::getLowerBound(Node *node, const value_type& val) const {
-  return head;
+  if (node == nullptr) return node;
+  if (comp(node->data, val)) { // if current node < val
+    return getLowerBound(node->right, val);
+  } else { // if val <= current node
+    Node *leftLowerBound = getLowerBound(node->left, val);
+    return leftLowerBound? leftLowerBound: node;
+  }
 }
 
 template <typename T, typename Compare>
 typename BinaryTree<T, Compare>::Node *BinaryTree<T, Compare>::getUpperBound(Node *node, const value_type& val) const {
-  return head;
+  if (node == nullptr) return node;
+  if (comp(val, node->data)) { // if val < current node
+    Node *leftUpperBound = getUpperBound(node->left, val);
+    return leftUpperBound? leftUpperBound: node;
+  } else { // if current node <= val
+    return getUpperBound(node->right, val);
+  }
 }
 
 template <typename T, typename Compare>
