@@ -13,3 +13,4 @@ chapter11 hash_table
 chapter11 open_addressing
 chapter11 perfect_hashing
 chapter12 tree
+chapter13 rb_tree
