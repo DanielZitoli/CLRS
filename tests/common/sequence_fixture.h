@@ -8,7 +8,7 @@
 #include <algorithm>
 
 template <typename T>
-class SequenceTest : public ::testing::Test { //public InterfaceTest<SequenceTest<T>> {
+class SequenceTest : public ::testing::Test {
  protected:
   using BaseType = std::list<int>;
   using TestType = T;
