@@ -224,11 +224,10 @@ typename XORList<T>::iterator XORList<T>::insertHelper(const_iterator position, 
   Node *insertNode = position.p;
   Node *insertNodeNext = position.next;
   Node *insertNodePrev = insertNode->getOther(insertNodeNext);
-  // std::cout << "node: " << insertNode << " - next node: " << insertNodeNext << " - prev node: " << insertNodePrev << std::endl;
-  newNode->setNext(nullptr, insertNode); // set next
-  newNode->setPrev(nullptr, insertNodePrev); // set prev
+  newNode->setNext(nullptr, insertNode);
+  newNode->setPrev(nullptr, insertNodePrev); 
 
-  insertNodePrev->setNext(insertNode, newNode); //// TODO
+  insertNodePrev->setNext(insertNode, newNode);
   insertNode->setPrev(insertNodePrev, newNode);
   ++items;
   return iterator{newNode, insertNode};
@@ -275,19 +274,17 @@ typename XORList<T>::iterator XORList<T>::erase(const_iterator first, const_iter
 
 template <typename T>
 XORList<T>::~XORList() {
-  if (!empty()){
-    sentinel->prev->setNext(sentinel, nullptr);
+  sentinel->prev->setNext(sentinel, nullptr);
 
-    Node *cur = sentinel;
-    Node *next = sentinel->next;
-    while (next != nullptr) {
-      Node *tmp = cur;
-      cur = next;
-      next = cur->getOther(tmp);
-      delete tmp;
-    }
-    delete cur;
+  Node *cur = sentinel;
+  Node *next = sentinel->next;
+  while (next != nullptr) {
+    Node *tmp = cur;
+    cur = next;
+    next = cur->getOther(tmp);
+    delete tmp;
   }
+  delete cur;
 }
 
 template <typename T>
@@ -299,8 +296,8 @@ void XORList<T>::setupSentinel() {
 
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const XORList<T> &list) {
-  for (auto val : list) std::cout << val << " ";
-  std::cout << std::endl;
+  for (auto val : list) out << val << " ";
+  out << std::endl;
   return out;
 }
 

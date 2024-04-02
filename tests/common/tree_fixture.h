@@ -143,10 +143,10 @@ TYPED_TEST_P(TreeTest, Erase) {
 
 TYPED_TEST_P(TreeTest, InsertAndEraseByValue) {
   RandomValue rand;
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 10000; ++i) {
     this->checkElements();
     int randomAction = this->base.empty() ? 0 : rand(0, 1);
-    int randomValue = rand(0, 100);
+    int randomValue = rand(0, 500);
     if (randomAction == 0) {
       auto baseIter = this->base.insert(randomValue).first;
       auto testIter = this->test.insert(randomValue).first;

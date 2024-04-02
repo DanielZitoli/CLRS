@@ -65,22 +65,29 @@ class RedBlackTree {
  private:
   size_type items = 0;
   node_type *head = nullptr;
+  node_type *sentinel = nullptr;
   key_compare comp;
 
  public:
   // Constructors and Destructors
-  explicit RedBlackTree(const key_compare& comp = key_compare()) : comp{comp} {}
-  RedBlackTree(const RedBlackTree &other) : items{other.items}, head{other.head? new node_type(*other.head): nullptr}, comp{other.comp} {}
-  RedBlackTree(RedBlackTree &&other) : items{other.items}, head{other.head}, comp{other.comp} {
+  explicit RedBlackTree(const key_compare& comp = key_compare()) : comp{comp} {
+    setupSentinel();
+  }
+  RedBlackTree(const RedBlackTree &other) : items{other.items}, head{nullptr}, sentinel{nullptr}, comp{other.comp} {
+    setupSentinel();
+  }
+  RedBlackTree(RedBlackTree &&other) : items{other.items}, head{other.head}, sentinel{other.sentinel}, comp{other.comp} {
     other.items = 0;
     other.head = nullptr;
   }
   RedBlackTree(std::initializer_list<value_type> il, const key_compare& comp = key_compare()) : comp{comp} {
+    setupSentinel();
     for (auto &val : il) insert(val);
   }
   RedBlackTree &operator=(RedBlackTree other) {
     std::swap(items, other.items);
     std::swap(head, other.head);
+    std::swap(sentinel, other.sentinel);
     std::swap(comp, other.comp);
     return *this;
   }
@@ -193,11 +200,14 @@ class RedBlackTree {
   }
 
  private:
+  void setupSentinel();
   iterator createIterator(node_type *node);
   const_iterator createIterator(node_type *node) const;
   const_iterator findHelper(const value_type& val) const;
   node_type *getLowerBound(node_type *node, const value_type& val) const;
   node_type *getUpperBound(node_type *node, const value_type& val) const;
+  void leftRotate(node_type *node);
+  void rightRotate(node_type *node);
 };
 
 template <typename T, typename Compare>
@@ -228,6 +238,11 @@ typename RedBlackTree<T, Compare>::iterator RedBlackTree<T, Compare>::erase(cons
 }
 
 template <typename T, typename Compare>
+void RedBlackTree<T, Compare>::setupSentinel() {
+  // TODO
+}
+
+template <typename T, typename Compare>
 typename RedBlackTree<T, Compare>::iterator RedBlackTree<T, Compare>::createIterator(node_type *node) {
   return node? iterator(node, Chapter12::getPredecessor(node)): iterator(nullptr, Chapter12::getMaximum(head)); 
 }
@@ -246,6 +261,17 @@ typename RedBlackTree<T, Compare>::node_type *RedBlackTree<T, Compare>::getLower
     node_type *leftLowerBound = getLowerBound(node->left, val);
     return leftLowerBound? leftLowerBound: node;
   }
+}
+
+template <typename T, typename Compare>
+void RedBlackTree<T, Compare>::leftRotate(node_type *x) {
+  if (x == nullptr || x->right == nullptr) throw std::logic_error("x must have a valid right child");
+  node_type *y = x->right;
+}
+
+template <typename T, typename Compare>
+void RedBlackTree<T, Compare>::rightRotate(node_type *y) {
+  if (y == nullptr || y->left == nullptr) throw std::logic_error("y must have a valid left child");
 }
 
 template <typename T, typename Compare>

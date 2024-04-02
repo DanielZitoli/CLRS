@@ -1,0 +1,10 @@
+# tests/chapter31/CMakeLists.txt
+
+add_executable(test_number_theoretic test_number_theoretic.cc)
+add_executable(test_rsa test_rsa.cc)
+add_executable(test_prime_testing test_prime_testing.cc)
+add_executable(test_factorization test_factorization.cc)
+target_link_libraries(test_number_theoretic PRIVATE gtest gtest_main chapter31_library tests_common_library)
+target_link_libraries(test_rsa PRIVATE gtest gtest_main chapter31_library tests_common_library)
+target_link_libraries(test_prime_testing PRIVATE gtest gtest_main chapter31_library tests_common_library)
+target_link_libraries(test_factorization PRIVATE gtest gtest_main chapter31_library tests_common_library)

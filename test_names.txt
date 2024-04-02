@@ -14,3 +14,9 @@ chapter11 open_addressing
 chapter11 perfect_hashing
 chapter12 tree
 chapter13 rb_tree
+bignum bignum
+chapter31 operations
+chapter31 number_theoretic
+chapter31 rsa
+chapter31 prime_testing
+chapter31 factorization

@@ -232,7 +232,37 @@ typename BinaryTree<T, Compare>::iterator BinaryTree<T, Compare>::erase(const_it
   if (splicedNode != erasedNode) {
     // copy splicedNode data into erased Node
     erasedNode->data = std::move(splicedNode->data);
+    splicedNode->left = splicedNode->right = nullptr;
+    delete splicedNode;
+  } else {
+    erasedNode->left = erasedNode->right = nullptr;
+    delete erasedNode;
   }
+
+  // if (splicedNode != erasedNode) {
+  //   // insert splicedNode into erasedNode's position
+  //   splicedNode->parent = erasedNode->parent;
+  //   splicedNode->left = erasedNode->left;
+  //   splicedNode->right = erasedNode->right;
+  //   if (erasedNode->parent == nullptr) {
+  //     head = splicedNode;
+  //   } else {
+  //     if (erasedNode == erasedNode->parent->left) {
+  //       erasedNode->parent->left = splicedChild;
+  //     } else {
+  //       erasedNode->parent->right = splicedChild;
+  //     }
+  //   }
+  //   if (splicedNode->left) {
+  //     splicedNode->left->parent = splicedNode;
+  //   }
+  //   if (splicedNode->right) {
+  //     splicedNode->right->parent = splicedNode;
+  //   }
+  // }
+  // erasedNode->left = erasedNode->right = nullptr;
+  // delete erasedNode;
+
 
   --items;
   return createIterator(erasedNodeNext);
@@ -272,8 +302,8 @@ typename BinaryTree<T, Compare>::node_type *BinaryTree<T, Compare>::getUpperBoun
 
 template <typename T, typename Compare>
 std::ostream &operator<<(std::ostream &out, const BinaryTree<T, Compare> &tree) {
-  for (auto val : tree) std::cout << val << " ";
-  std::cout << std::endl;
+  for (auto val : tree) out << val << " ";
+  out << std::endl;
   return out;
 }
 

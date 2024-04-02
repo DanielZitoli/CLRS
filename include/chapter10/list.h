@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <utility>
 #include <initializer_list>
+#include <iostream>
 
 namespace Chapter10 {
 
@@ -204,8 +205,8 @@ void List<T>::setupSentinel() {
 
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const List<T> &list) {
-  for (auto val : list) std::cout << val << " ";
-  std::cout << std::endl;
+  for (auto val : list) out << val << " ";
+  out << std::endl;
   return out;
 }
 
