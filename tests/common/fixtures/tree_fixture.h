@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "random_generators.h"
+#include "helpers/random_generators.h"
 
 #include <list>
 #include <vector>

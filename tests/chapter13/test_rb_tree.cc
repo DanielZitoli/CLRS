@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "chapter13/rb_tree.h"
-#include "tree_fixture.h"
+#include "fixtures/tree_fixture.h"
 
 TEST(Chapter13, RBTREE) {
   Chapter13::RedBlackTree<int> tree{6, 3, 4, 2};

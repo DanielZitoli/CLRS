@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "chapter12/binary_tree.h"
-#include "tree_fixture.h"
+#include "fixtures/tree_fixture.h"
 
 TEST(Chapter12, tree) {
   Chapter12::BinaryTree<int> tree{4, 3, 2, 1, 7};

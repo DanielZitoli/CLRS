@@ -2,7 +2,6 @@
 
 #include "chapter2/sorting.h"
 #include "chapter7/partitions.h"
-#include "testing_helpers.h"
 
 #include <vector>
 #include <utility>

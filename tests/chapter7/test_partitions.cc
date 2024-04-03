@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "chapter7/partitions.h"
-#include "random_generators.h"
+#include "helpers/random_generators.h"
 
 #include <utility>
 

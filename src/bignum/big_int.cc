@@ -1,6 +1,8 @@
 #include "bignum/big_int.h"
 #include "bignum/operations.h"
 
+#include "helpers/speed_profiler.h"
+
 #include <cctype>
 #include <algorithm>
 #include <bitset>
@@ -8,6 +10,9 @@
 #include <stdexcept>
 
 namespace BigNum {
+
+int BigInt::BASE = 2;
+uint64_t BigInt::BIT_SIZE = static_cast<uint64_t>(1) << BigInt::BASE;
 
 BigInt::BigInt(const std::string& str) {
   for (auto c : str) {
@@ -142,6 +147,7 @@ BigInt &BigInt::operator%=(const BigInt& other) {
 // construct into a BigInt and repair its bits
 
 BigInt BigInt::unsignedAddition(const bit_vector& a, const bit_vector& b) const {
+  PROFILE_START("Add");
   bit_vector result;
   int n = a.size(); int m = b.size();
   bit_type carry = 0;
@@ -152,10 +158,12 @@ BigInt BigInt::unsignedAddition(const bit_vector& a, const bit_vector& b) const 
     result.push_back(sum % BIT_SIZE);
     carry = sum / BIT_SIZE;
   }
+  PROFILE_END("Add");
   return result;
 }
 
 BigInt BigInt::unsignedSubtraction(const bit_vector& a, const bit_vector& b) const {
+  PROFILE_START("Subtract");
   bit_vector result;
   int n = a.size(); int m = b.size();
   signed_bit_type carry = 0;
@@ -172,6 +180,7 @@ BigInt BigInt::unsignedSubtraction(const bit_vector& a, const bit_vector& b) con
     }
     result.push_back(diff);
   }
+  PROFILE_END("Subtract");
   return result;
 }
 
@@ -195,6 +204,7 @@ BigInt BigInt::unsignedSubtraction(const bit_vector& a, const bit_vector& b) con
 // }
 
 BigInt BigInt::unsignedMultiplication(const bit_vector& a, const bit_vector& b) const {
+  PROFILE_START("Multiply");
   // Algorithm from Knuth's TAOCP Volume 2, pg. 268
   int m = a.size(); int n = b.size();
   bit_vector result(m+n, 0);
@@ -208,23 +218,28 @@ BigInt BigInt::unsignedMultiplication(const bit_vector& a, const bit_vector& b) 
     }
     result[j+m] = carry;
   }
+  PROFILE_END("Multiply");
   return result;
 }
 
 std::pair<BigInt, BigInt> BigInt::unsignedDivision(const bit_vector& a, const bit_vector& b) const {
+  PROFILE_START("Divide");
   BigInt quotient = 0;
   BigInt remainder = 0;
   BigInt bitsize = BIT_SIZE;
   int m = a.size();
   for (int i = m-1; i >= 0; --i) {
-    quotient *= bitsize;
-    remainder *= bitsize;
+    // quotient *= bitsize;
+    quotient = quotient.binaryScaleUp(BASE);
+    // remainder *= bitsize;
+    remainder = remainder.binaryScaleUp(BASE);
     remainder += BigInt(a[i]);
     while (remainder >= b) {
       remainder -= b;
-      quotient += 1;
+      ++quotient;
     }
   }
+  PROFILE_END("Divide");
   return std::pair<BigInt, BigInt>(quotient, remainder);
 }
 
@@ -238,6 +253,7 @@ BigInt BigInt::half() const {
   return binaryScaleDown(1);
 }
 BigInt BigInt::binaryScaleDown(int k) const { 
+  PROFILE_START("ScaleDown");
   int shiftedBits = k % BASE;
   int removeBits = k / BASE;
   bit_vector newBits = bits;
@@ -254,9 +270,11 @@ BigInt BigInt::binaryScaleDown(int k) const {
     }
   }
   BigInt result = newBits;
+  PROFILE_END("ScaleDown");
   return negative()? -result: result;
 }
 BigInt BigInt::binaryScaleUp(int k) const { 
+  PROFILE_START("ScaleUp");
   int shiftedBits = k % BASE;
   int addBits = k / BASE;
   bit_vector newBits = bits;
@@ -277,6 +295,7 @@ BigInt BigInt::binaryScaleUp(int k) const {
   }
   BigInt result = newBits;
   result.repairBits();
+  PROFILE_END("ScaleUp");
   return negative()? -result: result;
 }
 BigInt::bit_type BigInt::leastBits(bit_type num, int k) {
@@ -336,27 +355,33 @@ bool BigInt::compareBitMagnitude(const bit_vector& a, const bit_vector& b) {
 // Output methods
 
 long long BigInt::toNum() const {
+  PROFILE_START("ToNum");
   long long result = 0;
   for (auto it = bits.rbegin(); it != bits.rend(); ++it) {
     // Shift the current result to the left by one position
-    result *= BIT_SIZE;
+    result *= BIT_SIZE; // this might cause problems when BASE = 32 and outputting to an int
     // If the current bit is set, OR it with the result 
     result += *it;
   }
   if (negative()) result *= -1;
+  PROFILE_END("ToNum");
   return result;
 }
 
 std::string BigInt::toString() const {
+  PROFILE_START("ToString");
   std::string result = "";
   BigInt tmp = *this;
+  BigInt radix = 10;
   while (!tmp.zero()) {
-    int remainder = (tmp % 10).toNum();
-    tmp /= 10;
+    int remainder = (tmp % radix).toNum();
+    tmp /= radix;
     result.push_back('0'+remainder);
   }
   if (negative()) result.push_back('-');
   std::reverse(result.begin(), result.end());
+  PROFILE_END("ToString");
+  // profiler.results();
   return result;
 }
 
@@ -368,12 +393,12 @@ std::ostream &operator<<(std::ostream &out, const BigInt& num) {
     out << bit;
     out << ' ';
   }
-  out << " - Binary: ";
-  for (auto it = num.bits.rbegin(); it != num.bits.rend(); ++it) {
-    typename BigInt::bit_type bit = *it;
-    out << std::bitset<BigInt::BASE>(bit);
-    out << ' ';
-  }
+  // out << " - Binary: ";
+  // for (auto it = num.bits.rbegin(); it != num.bits.rend(); ++it) {
+  //   typename BigInt::bit_type bit = *it;
+  //   out << std::bitset<BigInt::BASE>(bit);
+  //   out << ' ';
+  // }
   out << std::endl;
   return out;
 }

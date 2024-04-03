@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
 #include "chapter6/heaps.h"
-#include "random_generators.h"
-#include "sorting_fixture.h"
+#include "helpers/random_generators.h"
+#include "fixtures/sorting_fixture.h"
 
 GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(StableSortingTest);
 

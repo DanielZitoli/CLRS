@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "chapter2/sorting.h"
-#include "sorting_fixture.h"
+#include "fixtures/sorting_fixture.h"
 #include <functional>
 #include <utility>
 

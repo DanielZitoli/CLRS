@@ -7,6 +7,10 @@
 #include <iostream>
 #include <concepts>
 #include <compare>
+#include <chrono>
+#include <unordered_map>
+#include <vector>
+
 
 namespace BigNum {
 
@@ -15,8 +19,9 @@ class BigInt {
   using signed_bit_type = int64_t;
   using bit_vector = std::deque<bit_type>;
 
-  static const int BASE = 4; // each bit is a unsigned 32-bit integer i.e. in the range [0, 2^32 - 1]
-  static const uint64_t BIT_SIZE = static_cast<uint64_t>(1) << BASE; // 2 ^ BASE
+ public:
+  static int BASE; // = 2; // each bit is a unsigned 32-bit integer i.e. in the range [0, 2^32 - 1]
+  static uint64_t BIT_SIZE; // = static_cast<uint64_t>(1) << BASE; // 2 ^ BASE
   bit_vector bits;
   bool isPositive = true;
 

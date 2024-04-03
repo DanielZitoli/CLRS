@@ -2,8 +2,8 @@
 
 #include "chapter9/order_statistics.h"
 
-#include "random_generators.h"
-#include "testing_helpers.h"
+#include "helpers/random_generators.h"
+#include "helpers/printing_helpers.h"
 
 #include <vector>
 #include <algorithm>

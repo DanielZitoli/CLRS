@@ -2,9 +2,9 @@
 
 #include "chapter8/linear_sorting.h"
 
-#include "random_generators.h"
-#include "testing_helpers.h"
-#include "sorting_fixture.h"
+#include "helpers/random_generators.h"
+#include "helpers/printing_helpers.h"
+#include "fixtures/sorting_fixture.h"
 
 #include <vector>
 #include <algorithm>

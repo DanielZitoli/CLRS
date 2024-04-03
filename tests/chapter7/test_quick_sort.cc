@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
 #include "chapter7/quick_sort.h"
-#include "sorting_fixture.h"
-#include "testing_helpers.h"
+#include "fixtures/sorting_fixture.h"
+#include "helpers/printing_helpers.h"
 
 #include <random>
 #include <algorithm>

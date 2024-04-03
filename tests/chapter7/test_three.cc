@@ -1,6 +1,6 @@
 #include "chapter7/partitions.h"
 #include "chapter7/quick_sort.h"
-#include "testing_helpers.h"
+#include "helpers/printing_helpers.h"
 
 #include <vector>
 #include <utility>
